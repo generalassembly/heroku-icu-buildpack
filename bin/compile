@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 compile="/app/icu"
 build="$1/icu"
 cache="$2/icu"
@@ -30,7 +29,5 @@ fi
 # Tell Charlock Holmes where to find ICU.
 export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=$compile"
 
-echo $buildpack_dir
-
-#give environment to later buildpacks
+# Make sure we export the relevant environment variables for later buildpacks
 export | grep -E -e '(BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$buildpack/export"
