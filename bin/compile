@@ -4,49 +4,15 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
-function error() {
-  echo " !     $*" >&2
-  exit 1
-}
+pushd icu-src
 
-function topic() {
-  echo "-----> $*"
-}
+./runConfigureICU Linux --prefix=$BUILD_DIR/icu
+make
+make install
 
-function indent() {
-  c='s/^/       /'
-  case $(uname) in
-    Darwin) sed -l "$c";;
-    *)      sed -u "$c";;
-  esac
-}
+popd
 
-APT_CACHE_DIR="$CACHE_DIR/apt/cache"
-APT_STATE_DIR="$CACHE_DIR/apt/state"
-
-mkdir -p "$APT_CACHE_DIR/archives/partial"
-mkdir -p "$APT_STATE_DIR/lists/partial"
-
-APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
-
-topic "Updating apt caches"
-apt-get $APT_OPTIONS update | indent
-
-apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libicu-dev | indent
-
-for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
-  topic "Installing $(basename $DEB)"
-  dpkg -x $DEB $BUILD_DIR
-done
-
-export PATH="$BUILD_DIR/usr/bin:$PATH"
-export LD_LIBRARY_PATH="$BUILD_DIR/usr/lib/x86_64-linux-gnu:$BUILD_DIR/usr/lib/i386-linux-gnu:$BUILD_DIR/usr/lib:$LD_LIBRARY_PATH"
-export LIBRARY_PATH="$BUILD_DIR/usr/lib/x86_64-linux-gnu:$BUILD_DIR/usr/lib/i386-linux-gnu:$BUILD_DIR/usr/lib:$LIBRARY_PATH"
-export INCLUDE_PATH="$BUILD_DIR/usr/include:$INCLUDE_PATH"
-export CPATH="$INCLUDE_PATH"
-export CPPPATH="$INCLUDE_PATH"
-export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUILD_DIR/usr/lib/i386-linux-gnu/pkgconfig:$BUILD_DIR/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
-export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-lib=/app/usr/lib --with-icu-include=/app/usr/include"
+export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-lib=/app/icu/lib --with-icu-include=/app/icu/include"
 
 #give environment to later buildpacks
-export | grep -E -e ' (PATH|LD_LIBRARY_PATH|LIBRARY_PATH|INCLUDE_PATH|CPATH|CPPPATH|PKG_CONFIG_PATH|BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$LP_DIR/export"
+export | grep -E -e ' (BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$LP_DIR/export"
