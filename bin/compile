@@ -1,20 +1,25 @@
 #!/bin/bash
 
+ICU_VERSION="57.1"
+
 compile="/app/icu"
 build="$1/icu"
 cache="$2/icu"
 buildpack=`cd $(dirname $0); cd ..; pwd`
 
+icu_url="http://download.icu-project.org/files/icu4c/${ICU_VERSION}/icu4c-${ICU_VERSION//./_}-src.tgz"
 if [[ -d "$cache" ]]; then
   echo "Using cached build of ICU"
   cp -R $cache $build
   cp -R $cache $compile
 else
-  echo "Building ICU"
+  echo "Downloading ICU $ICU_VERSION"
 
-  tar -xzf icu.tar.gz
+  curl -L $icu_url | tar xz
 
-  pushd icu-src
+  echo "Building ICU $ICU_VERSION"
+
+  pushd icu/source
 
   ./runConfigureICU Linux --prefix=$compile
   make
