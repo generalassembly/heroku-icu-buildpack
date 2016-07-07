@@ -4,9 +4,12 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
+mkdir -p "$BUILD_DIR/app"
+
 if [[ -d "$CACHE_DIR/icu" ]]; then
   echo "Using cached build of ICU"
-  cp -R "$CACHE_DIR/icu" "$BUILD_DIR/icu"
+  cp -R "$CACHE_DIR/icu" "$BUILD_DIR/app/icu"
+  cp -R "$CACHE_DIR/icu" "/app/icu"
 else
   echo "Building ICU"
   pushd icu-src
@@ -17,12 +20,9 @@ else
 
   popd
 
-  cp -R "$BUILD_DIR/icu" "$CACHE_DIR/icu"
+  cp -R "/app/icu" "$CACHE_DIR/icu"
+  cp -R "/app/icu" "$BUILD_DIR/app/icu"
 fi
-
-cp -R "$CACHE_DIR/icu" "/app/icu"
-
-echo "ICU available at $BUILD_DIR/icu"
 
 export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=/app/icu"
 
