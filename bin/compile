@@ -1,7 +1,5 @@
 #!/bin/bash
 
-BUILD_DIR=$1
-CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
 compile="/app/icu"
@@ -32,5 +30,9 @@ fi
 # Tell Charlock Holmes where to find ICU.
 export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=$compile"
 
+cat $BUNDLE_BUILD__CHARLOCK_HOLMES > "$3/BUNDLE_BUILD__CHARLOCK_HOLMES"
+echo "$LP_DIR"
+ls $LP_DIR
+
 #give environment to later buildpacks
-export | grep -E -e ' (BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$LP_DIR/export"
+export | grep -E -e '(BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$LP_DIR/export"
