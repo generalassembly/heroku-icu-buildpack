@@ -30,7 +30,7 @@ fi
 # Tell Charlock Holmes where to find ICU.
 export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=$compile"
 
-cat $BUNDLE_BUILD__CHARLOCK_HOLMES > "$3/BUNDLE_BUILD__CHARLOCK_HOLMES"
+echo "$BUNDLE_BUILD__CHARLOCK_HOLMES" > "$3/BUNDLE_BUILD__CHARLOCK_HOLMES"
 echo "$LP_DIR"
 ls $LP_DIR
 
