@@ -1,10 +1,10 @@
 #!/bin/bash
 
-LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
 compile="/app/icu"
 build="$1/icu"
 cache="$2/icu"
+buildpack=`cd $(dirname $0); cd ..; pwd`
 
 if [[ -d "$cache" ]]; then
   echo "Using cached build of ICU"
@@ -30,9 +30,7 @@ fi
 # Tell Charlock Holmes where to find ICU.
 export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=$compile"
 
-echo "$BUNDLE_BUILD__CHARLOCK_HOLMES" > "$3/BUNDLE_BUILD__CHARLOCK_HOLMES"
-echo "$LP_DIR"
-ls $LP_DIR
+echo $buildpack_dir
 
 #give environment to later buildpacks
-export | grep -E -e '(BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$LP_DIR/export"
+export | grep -E -e '(BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$buildpack/export"
