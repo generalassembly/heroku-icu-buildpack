@@ -4,13 +4,22 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
-pushd icu-src
+if [[ -d "$CACHE_DIR/icu" ]]; then
+  echo "Using cached build of ICU"
+  cp -R "$CACHE_DIR/icu" "$BUILD_DIR/icu"
+else
+  echo "Building ICU"
+  pushd icu-src
 
-./runConfigureICU Linux --prefix=$BUILD_DIR/icu
-make
-make install
+  ./runConfigureICU Linux --prefix=$BUILD_DIR/icu
+  make
+  make install
 
-popd
+  popd
+
+  cp -R "$BUILD_DIR/icu" "$CACHE_DIR/icu"
+fi
+
 
 export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-lib=/app/icu/lib --with-icu-include=/app/icu/include"
 
