@@ -20,8 +20,9 @@ else
   cp -R "$BUILD_DIR/icu" "$CACHE_DIR/icu"
 fi
 
+echo "ICU available at $BUILD_DIR/icu"
 
-export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-lib=/app/icu/lib --with-icu-include=/app/icu/include"
+export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=$BUILD_DIR/icu"
 
 #give environment to later buildpacks
 export | grep -E -e ' (BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$LP_DIR/export"
