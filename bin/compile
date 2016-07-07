@@ -26,6 +26,7 @@ else
   cp -R $compile $build
 fi
 
+# Tell Charlock Holmes where to find ICU.
 export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=$compile"
 
 #give environment to later buildpacks
