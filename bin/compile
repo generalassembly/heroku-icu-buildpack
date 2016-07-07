@@ -4,27 +4,29 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
-mkdir -p "$BUILD_DIR/app"
+compile="/app/icu"
+build="$1/icu"
+cache="$2/icu"
 
 if [[ -d "$CACHE_DIR/icu" ]]; then
   echo "Using cached build of ICU"
-  cp -R "$CACHE_DIR/icu" "$BUILD_DIR/app/icu"
-  cp -R "$CACHE_DIR/icu" "/app/icu"
+  cp -R $cache $build
+  cp -R $cache $compile
 else
   echo "Building ICU"
   pushd icu-src
 
-  ./runConfigureICU Linux --prefix=/app/icu
+  ./runConfigureICU Linux --prefix=$compile
   make
   make install
 
   popd
 
-  cp -R "/app/icu" "$CACHE_DIR/icu"
-  cp -R "/app/icu" "$BUILD_DIR/app/icu"
+  cp -R $compile $cache
+  cp -R $compile $build
 fi
 
-export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=/app/icu"
+export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=$compile"
 
 #give environment to later buildpacks
 export | grep -E -e ' (BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$LP_DIR/export"
