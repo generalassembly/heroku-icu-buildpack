@@ -11,7 +11,7 @@ else
   echo "Building ICU"
   pushd icu-src
 
-  ./runConfigureICU Linux --prefix=$BUILD_DIR/icu
+  ./runConfigureICU Linux --prefix=/app/icu
   make
   make install
 
@@ -20,9 +20,11 @@ else
   cp -R "$BUILD_DIR/icu" "$CACHE_DIR/icu"
 fi
 
+cp -R "$CACHE_DIR/icu" "/app/icu"
+
 echo "ICU available at $BUILD_DIR/icu"
 
-export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=$BUILD_DIR/icu"
+export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=/app/icu"
 
 #give environment to later buildpacks
 export | grep -E -e ' (BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$LP_DIR/export"
