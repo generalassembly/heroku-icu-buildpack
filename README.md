@@ -5,9 +5,9 @@ as a dependency for several tools.
 
 ## How it works
 
-This buildpack makes ICU 4.8 available in the `/app/icu` directory for both
-compilation and runtime uses. The primary purpose of this is to allow Charlock
-Holmes (a Ruby gem for encoding heuristics) to run on Heroku.
+This buildpack makes ICU4C available in the `/app/icu` directory for both
+compilation and runtime uses. The primary purpose of this is to allow [Charlock Holmes](https://github.com/brianmario/charlock_holmes)
+(a Ruby gem for encoding heuristics) to run on Heroku.
 
 In order to achieve this, the following happens:
 
