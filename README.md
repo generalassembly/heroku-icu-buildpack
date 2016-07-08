@@ -11,7 +11,7 @@ Holmes (a Ruby gem for encoding heuristics) to run on Heroku.
 
 In order to achieve this, the following happens:
 
-1. ICU is compiled from the source included in this buildpack
+1. ICU is downloaded and compiled from source
 2. The compiled library is cached for future builds
 3. The compiled result is copied into `/app/icu` and `$1/icu` (the build
    directory) to make it available in a seemingly consistent location during

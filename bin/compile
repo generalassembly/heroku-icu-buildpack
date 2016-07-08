@@ -9,6 +9,7 @@ cache="$cache_container/$ICU_VERSION"
 buildpack=`cd $(dirname $0); cd ..; pwd`
 
 icu_url="http://download.icu-project.org/files/icu4c/${ICU_VERSION}/icu4c-${ICU_VERSION//./_}-src.tgz"
+
 if [[ -d "$cache" ]]; then
   echo "Using cached build of ICU"
   cp -R $cache $build
