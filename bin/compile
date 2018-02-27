@@ -44,3 +44,9 @@ export BUNDLE_BUILD__CHARLOCK_HOLMES="--with-icu-dir=$compile"
 
 # Make sure we export the relevant environment variables for later buildpacks
 export | grep -E -e '(BUNDLE_BUILD__CHARLOCK_HOLMES)='  > "$buildpack/export"
+
+export PKG_CONFIG_PATH=$compile/lib/pkgconfig:$PKG_CONFIG_PATH
+
+export | grep -E -e '(PKG_CONFIG_PATH)='  >> "$buildpack/export"
+
+echo "exported PKG_CONFIG_PATH: $PKG_CONFIG_PATH"
