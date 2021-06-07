@@ -1,4 +1,5 @@
-# Heroku ICU Buildpack
+# --Heroku ICU Buildpack--
+# May 27th 2021: no longer used by any apps
 
 A buildpack for including the ICU library into a Heroku dyno. This is required
 as a dependency for several tools.
